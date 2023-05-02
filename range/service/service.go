@@ -4,8 +4,8 @@ import (
 	"strconv"
 	"strings"
 
-	"alfred_utils/range/model"
-	"alfred_utils/utils"
+	"github.com/mcoder2014/alfred_utils/range/model"
+	"github.com/mcoder2014/alfred_utils/utils"
 )
 
 func GenInteger(req *model.IntRequest) error {

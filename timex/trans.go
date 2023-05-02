@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	"alfred_utils/utils"
+	"github.com/mcoder2014/alfred_utils/utils"
 
 	aw "github.com/deanishe/awgo"
 	"github.com/sirupsen/logrus"

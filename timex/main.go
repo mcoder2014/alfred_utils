@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 
-	"alfred_utils/timex/model"
+	"github.com/mcoder2014/alfred_utils/timex/model"
 
 	aw "github.com/deanishe/awgo"
 	"github.com/sirupsen/logrus"
