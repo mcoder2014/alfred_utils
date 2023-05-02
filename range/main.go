@@ -3,9 +3,9 @@ package main
 import (
 	"flag"
 
-	"alfred_utils/range/helper"
-	"alfred_utils/range/model"
-	"alfred_utils/range/service"
+	"github.com/mcoder2014/alfred_utils/range/helper"
+	"github.com/mcoder2014/alfred_utils/range/model"
+	"github.com/mcoder2014/alfred_utils/range/service"
 
 	aw "github.com/deanishe/awgo"
 	"github.com/sirupsen/logrus"

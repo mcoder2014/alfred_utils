@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"alfred_utils/utils"
+	"github.com/mcoder2014/alfred_utils/utils"
 )
 
 const RelateLimit = 10

@@ -3,7 +3,7 @@ package helper
 import (
 	"strconv"
 
-	"alfred_utils/range/model"
+	"github.com/mcoder2014/alfred_utils/range/model"
 
 	aw "github.com/deanishe/awgo"
 )
