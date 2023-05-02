@@ -4,6 +4,7 @@ go 1.18
 
 require (
 	github.com/deanishe/awgo v0.29.1 // indirect
+	github.com/jszwec/csvutil v1.8.0 // indirect
 	github.com/magefile/mage v1.11.0 // indirect
 	github.com/sirupsen/logrus v1.9.0 // indirect
 	go.deanishe.net/env v0.5.1 // indirect

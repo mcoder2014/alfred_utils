@@ -8,8 +8,12 @@ import (
 )
 
 func NewCopyableItem(wf *aw.Workflow, title, val string) {
+	NewCopyableItemWithDescription(wf, title, val, val)
+}
+
+func NewCopyableItemWithDescription(wf *aw.Workflow, title, description, val string) {
 	it := wf.NewItem(title)
-	it.Subtitle(val)
+	it.Subtitle(description)
 	it.Arg(val)
 	it.Valid(true)
 	it.Copytext(val)
