@@ -8,6 +8,7 @@ import (
 
 var defaultEngines = []CodeEngine{
 	utils.GPtr(UnicodeEngine{}),
+	utils.GPtr(StringEncoderEngine{}),
 }
 
 func Serve(req *Request) error {
