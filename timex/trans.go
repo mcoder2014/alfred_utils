@@ -40,6 +40,7 @@ func transInt64(w *aw.Workflow, param string) error {
 	t := time.Unix(val, 0)
 	utils.NewCopyableItem(w, "秒时间戳", t.Format("2006-01-02 15:04:05"))
 	utils.NewCopyableItem(w, "秒时间戳", t.Format("2006-01-02 15:04:05 MST"))
+	utils.NewCopyableItem(w, "时间 RFC3339", t.Format(time.RFC3339))
 
 	// 毫秒时间戳
 	t = time.Unix(val/1e3, val%1e3)
@@ -61,59 +62,80 @@ func transInt64(w *aw.Workflow, param string) error {
 }
 
 func transFormatTime(w *aw.Workflow, param string) error {
+	// 时区为"Asia/Shanghai"
+	location, err := time.LoadLocation("Asia/Shanghai")
+	if err != nil {
+		return fmt.Errorf("无法加载时区：%w", err)
+	}
+
+	var convert = func(layout string, t time.Time) {
+		utils.NewCopyableItem(w, fmt.Sprintf("%s 转时间戳", layout), strconv.FormatInt(t.Unix(), 10))
+		utils.NewCopyableItem(w, fmt.Sprintf("%s 转毫秒时间戳", layout), strconv.FormatInt(t.UnixMilli(), 10))
+		utils.NewCopyableItem(w, fmt.Sprintf("%s 转微秒时间戳", layout), strconv.FormatInt(t.UnixMicro(), 10))
+		utils.NewCopyableItem(w, fmt.Sprintf("%s 转纳秒时间戳", layout), strconv.FormatInt(t.UnixNano(), 10))
+		utils.NewCopyableItem(w, fmt.Sprintf("%s 转游标", layout), strconv.FormatInt(utils.GetIDFromTime(t), 10))
+		utils.NewCopyableItem(w, fmt.Sprintf("%s 转随机 ID", layout), strconv.FormatInt(utils.GenID(t), 10))
+	}
 
 	var executes = []func() error{
 		func() error {
 			// 2006-01-02 15:04:05
-			t, err := time.Parse("2006-01-02 15:04:05", param)
+			const layout = "2006-01-02 15:04:05"
+			t, err := time.ParseInLocation(layout, param, location)
 			if err != nil {
 				return err
 			}
-			utils.NewCopyableItem(w, "2006-01-02 15:04:05 转时间戳", strconv.FormatInt(t.Unix(), 10))
-			utils.NewCopyableItem(w, "2006-01-02 15:04:05 转游标", strconv.FormatInt(utils.GetIDFromTime(t), 10))
-			utils.NewCopyableItem(w, "2006-01-02 15:04:05 转随机id", strconv.FormatInt(utils.GenID(t), 10))
+			convert(layout, t)
 			return nil
 		},
 		func() error {
 			// 2006/01/02 15:04:05
-			t, err := time.Parse("2006/01/02 15:04:05", param)
+			const layout = "2006/01/02 15:04:05"
+			t, err := time.ParseInLocation(layout, param, location)
 			if err != nil {
 				return err
 			}
-			utils.NewCopyableItem(w, "2006/01/02 15:04:05 转时间戳", strconv.FormatInt(t.Unix(), 10))
+			convert(layout, t)
 			return nil
 		},
 		func() error {
 			// 2006-01-02 15:04:05.999
-			t, err := time.Parse("2006-01-02 15:04:05.999", param)
+			const layout = "2006-01-02 15:04:05.999"
+			t, err := time.ParseInLocation(layout, param, location)
 			if err != nil {
 				return err
 			}
-			utils.NewCopyableItem(w, "2006-01-02 15:04:05.999 转时间戳", strconv.FormatInt(t.Unix(), 10))
-			utils.NewCopyableItem(w, "2006-01-02 15:04:05.999 转毫秒时间戳", strconv.FormatInt(t.UnixMilli(), 10))
+			convert(layout, t)
 			return nil
 		},
 		func() error {
 			// 2006-01-02 15:04:05.999999
-			t, err := time.Parse("2006-01-02 15:04:05.999999", param)
+			const layout = "2006-01-02 15:04:05.999999"
+			t, err := time.ParseInLocation(layout, param, location)
 			if err != nil {
 				return err
 			}
-			utils.NewCopyableItem(w, "2006-01-02 15:04:05.999999 转时间戳", strconv.FormatInt(t.Unix(), 10))
-			utils.NewCopyableItem(w, "2006-01-02 15:04:05.999999 转毫秒时间戳", strconv.FormatInt(t.UnixMilli(), 10))
-			utils.NewCopyableItem(w, "2006-01-02 15:04:05.999999 转微秒时间戳", strconv.FormatInt(t.UnixMicro(), 10))
+			convert(layout, t)
 			return nil
 		},
 		func() error {
 			// 2006-01-02 15:04:05.999999999
-			t, err := time.Parse("2006-01-02 15:04:05.999999999", param)
+			const layout = "2006-01-02 15:04:05.999999999"
+			t, err := time.ParseInLocation(layout, param, location)
 			if err != nil {
 				return err
 			}
-			utils.NewCopyableItem(w, "2006-01-02 15:04:05.999999999 转时间戳", strconv.FormatInt(t.Unix(), 10))
-			utils.NewCopyableItem(w, "2006-01-02 15:04:05.999999999 转毫秒时间戳", strconv.FormatInt(t.UnixMilli(), 10))
-			utils.NewCopyableItem(w, "2006-01-02 15:04:05.999999999 转微秒时间戳", strconv.FormatInt(t.UnixMicro(), 10))
-			utils.NewCopyableItem(w, "2006-01-02 15:04:05.999999999 转纳秒时间戳", strconv.FormatInt(t.UnixNano(), 10))
+			convert(layout, t)
+			return nil
+		},
+		func() error {
+			// RFC 3339
+			const layout = time.RFC3339
+			t, err := time.ParseInLocation(layout, param, location)
+			if err != nil {
+				return err
+			}
+			convert(layout, t)
 			return nil
 		},
 	}
